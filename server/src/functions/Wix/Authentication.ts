@@ -4,6 +4,7 @@ import { parseEvent } from "../../common/parseEvent";
 import { getTokensFromWixUsingAuthCode } from "../../api/wix";
 
 export async function sendWixOAuth(event) {
+  console.log({ event });
   const dataParams: WixOAuthRequestType = await parseEvent(event, [
     "code",
     "state",

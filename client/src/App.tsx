@@ -3,7 +3,6 @@ import { getWixAppInstallerUrl } from "./config";
 import { wixAuth } from "./utils/wixAuth";
 
 function App() {
-  console.log({ server: process.env.SERVER_BASE_URL });
   React.useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tokenParam = urlParams.get("token");

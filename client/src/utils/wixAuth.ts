@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import {
   AUTHENTICATION_URL,
+  REDIRECT_TO_WIX,
   WIX_APP_STATE,
   WIX_TOKEN_RECEIVED_URL,
 } from "../config";
@@ -25,6 +26,10 @@ export const wixAuth = (code: string, instanceId: string, state: string) => {
     })
     .then((res: AxiosResponse<AuthenticationAxiosResult>) => {
       if (res.data.success) {
+        console.log({ access_token: res.data.access_token });
+        if (REDIRECT_TO_WIX) {
+          window.location.href = `https://www.wix.com/installer/token-received?access_token=${res.data.access_token}`;
+        }
         axios.post(
           WIX_TOKEN_RECEIVED_URL,
           {},

@@ -1,4 +1,9 @@
-export async function parseEvent(event, dependentKeys: string[]) {
+import { ParseEventReturnValue } from "./types";
+
+export async function parseEvent<T>(
+  event,
+  dependentKeys: string[]
+): Promise<ParseEventReturnValue<T>> {
   let body;
 
   try {
@@ -8,14 +13,21 @@ export async function parseEvent(event, dependentKeys: string[]) {
       body = JSON.parse(event.body);
     }
   } catch (e) {
-    throw Error("Invalid JSON");
+    return { success: false, message: "Invalid JSON" };
   }
 
+  console.log({ body });
+  if (!body) return { success: false, message: "Invalid JSON" };
+
+  let success = true;
+
   dependentKeys.forEach((key) => {
-    if (!body[key]) {
-      throw Error(`missing ${key} in event body`);
+    if (!body.hasOwnProperty(key)) {
+      success = false;
     }
   });
 
-  return body;
+  if (!success) return { success: false, message: "Missing Keys" };
+
+  return { success: true, body, message: "" };
 }

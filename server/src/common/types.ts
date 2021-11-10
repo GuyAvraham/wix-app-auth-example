@@ -3,3 +3,9 @@ export interface WixOAuthRequestType {
   state: string;
   instanceId: string;
 }
+
+export interface ParseEventReturnValue<T> {
+  success: boolean;
+  message: string;
+  body?: T;
+}

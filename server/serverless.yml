@@ -21,6 +21,7 @@ provider:
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
+  - serverless-dotenv-plugin
 
 custom:
   serverless-offline:

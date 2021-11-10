@@ -4,18 +4,14 @@ import { parseEvent } from "../../common/parseEvent";
 import { getTokensFromWixUsingAuthCode } from "../../api/wix";
 
 export async function sendWixOAuth(event) {
-  const dataParams: WixOAuthRequestType = await parseEvent(event, [
-    "code",
-    "state",
-    "instanceId",
-  ]);
-
-  if (!dataParams)
+  const paramsArray = ["code", "state", "instanceId"];
+  const dataParams = await parseEvent<WixOAuthRequestType>(event, paramsArray);
+  if (!dataParams.success || !dataParams.body)
     return internalErrorResponse({
-      message: { content: "Missing Paramaters!", success: false },
+      message: { content: dataParams.message, success: dataParams.success },
     });
 
-  const { code, state, instanceId } = dataParams;
+  const { code, instanceId } = dataParams.body;
 
   const data = await getTokensFromWixUsingAuthCode(code);
   if (data.refresh_token && data.access_token) {

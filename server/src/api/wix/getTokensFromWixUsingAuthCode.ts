@@ -6,7 +6,6 @@ export async function getTokensFromWixUsingAuthCode(authCode: string): Promise<{
   access_token: string;
   instanceId: string;
 }> {
-  console.log({ authCode });
   return axios
     .post(`${OAUTH_PROVIDER_BASE_URL}/access`, {
       grant_type: "authorization_code",

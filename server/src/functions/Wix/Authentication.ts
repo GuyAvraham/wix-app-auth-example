@@ -4,7 +4,6 @@ import { parseEvent } from "../../common/parseEvent";
 import { getTokensFromWixUsingAuthCode } from "../../api/wix";
 
 export async function sendWixOAuth(event) {
-  console.log({ event });
   const dataParams: WixOAuthRequestType = await parseEvent(event, [
     "code",
     "state",
@@ -26,7 +25,6 @@ export async function sendWixOAuth(event) {
 
     return validResponse({ access_token: data.access_token, success: true });
   }
-  console.log({ data });
   return internalErrorResponse({
     message: {
       content: "Sorry something went wrong please try again later.",

@@ -6,10 +6,14 @@ import { getTokensFromWixUsingAuthCode } from "../../api/wix";
 export async function sendWixOAuth(event) {
   const paramsArray = ["code", "state", "instanceId"];
   const dataParams = await parseEvent<WixOAuthRequestType>(event, paramsArray);
-  if (!dataParams.success || !dataParams.body)
+  if (!dataParams.success || !dataParams.body) {
+    if (dataParams.message === "Lambda is warm")
+      return validResponse({ message: dataParams.message });
+
     return internalErrorResponse({
       message: { content: dataParams.message, success: dataParams.success },
     });
+  }
 
   const { code, instanceId } = dataParams.body;
 

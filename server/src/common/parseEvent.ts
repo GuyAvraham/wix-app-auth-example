@@ -4,6 +4,11 @@ export async function parseEvent<T>(
   event,
   dependentKeys: string[]
 ): Promise<ParseEventReturnValue<T>> {
+  // if (event.source === "serverless-plugin-warmup") {
+  //   console.log("WarmUp - Lambda is warm!");
+  //    return {success: true, message: "Lambda is warm"}
+  // }
+
   let body;
 
   try {

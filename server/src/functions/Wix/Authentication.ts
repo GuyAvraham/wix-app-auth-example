@@ -8,7 +8,10 @@ export async function sendWixOAuth(event) {
   const dataParams = await parseEvent<WixOAuthRequestType>(event, paramsArray);
   if (!dataParams.success || !dataParams.body) {
     if (dataParams.message === "Lambda is warm")
-      return validResponse({ message: dataParams.message });
+      return validResponse({
+        message: dataParams.message,
+        success: dataParams.success,
+      });
 
     return internalErrorResponse({
       message: { content: dataParams.message, success: dataParams.success },
@@ -21,7 +24,7 @@ export async function sendWixOAuth(event) {
   if (data.refresh_token && data.access_token) {
     data.instanceId = instanceId;
 
-    // YOU SHOULD SAVE YOUR REFRESH TOKEN!
+    // YOU SHOULD SAVE YOUR REFRESH TOKEN TO THE DATABASE AND USE IT WHEN YOU CALL WIX API TO GET ACCESS TOKENS
 
     return validResponse({ access_token: data.access_token, success: true });
   }

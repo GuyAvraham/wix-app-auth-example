@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import {
   AUTHENTICATION_URL,
+  REDIRECT_TO_WIX,
   WIX_APP_STATE,
   WIX_TOKEN_RECEIVED_URL,
 } from "../config";
@@ -25,6 +26,9 @@ export const wixAuth = (code: string, instanceId: string, state: string) => {
     })
     .then((res: AxiosResponse<AuthenticationAxiosResult>) => {
       if (res.data.success) {
+        if (REDIRECT_TO_WIX === "true") {
+          window.location.href = `https://www.wix.com/installer/token-received?access_token=${res.data.access_token}`;
+        }
         axios.post(
           WIX_TOKEN_RECEIVED_URL,
           {},
@@ -32,10 +36,10 @@ export const wixAuth = (code: string, instanceId: string, state: string) => {
         );
         return;
       }
-      //   setErrorMessage("Sorry something went wrong... please try again later!");
+      throw Error("Sorry something went wrong... please try again later!");
     })
     .catch((err) => {
       console.log(err);
-      //   setErrorMessage("Sorry something went wrong... please try again later!");
+      throw Error("Sorry something went wrong... please try again later!");
     });
 };

@@ -1,6 +1,7 @@
 import { ParseEventReturnValue } from "./types";
+import { verify } from "jsonwebtoken";
 
-export async function parseEvent<T>(
+export async function parseWixWebhookEvent<T>(
   event,
   dependentKeys: string[]
 ): Promise<ParseEventReturnValue<T>> {
@@ -34,5 +35,26 @@ export async function parseEvent<T>(
 
   if (!success) return { success: false, message: "Missing Keys" };
 
-  return { success: true, body, message: "" };
+  if (!process.env.WIX_PUBLIC_KEY) {
+    console.log("MISSING WIX PUBLIC KEY");
+    return { success: false, message: "Missing Keys" };
+  }
+
+  const PUBLICKEY = process.env.WIX_PUBLIC_KEY.replace(/\\n/gm, "\n");
+
+  let jwtDecoded;
+  success = true;
+  await verify(event.body, PUBLICKEY, function (err, decoded) {
+    if (err) {
+      success = false;
+      return;
+    }
+    jwtDecoded = decoded;
+  });
+
+  if (!success) return { success: false, message: "Invalid Token" };
+
+  const data = JSON.parse(jwtDecoded.data);
+
+  return { success: true, body: data, message: "" };
 }

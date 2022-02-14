@@ -1,7 +1,6 @@
-service: server
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+org: guy1812
+app: wix-auth
+service: wix-auth-test
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -22,6 +21,7 @@ provider:
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
+  - serverless-dotenv-plugin
 
 custom:
   serverless-offline:

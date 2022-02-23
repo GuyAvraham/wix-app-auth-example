@@ -4,6 +4,9 @@
 
 ##### This project follows this guide (created by wix): https://dev.wix.com/api/rest/getting-started/authentication
 
+Building a wix app will allow a wix webstie/shop owners to enter the wix marketplace and install a wix app into their wix website. 
+The initial part of building the wix app requires the custom app to authenticate with the wix platform. This authentication requires both client and server work.
+
 **Note** I would recommand reading how Wix Authentication works (the linke is above) for reference, making your life easier working on this repo and working with wix auth API in general.
 
 Techologies used in this project
